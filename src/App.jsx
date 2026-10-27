@@ -2,24 +2,27 @@ import { useState } from 'react';
 import './App.css'
 import TodoList from './TodoList.jsx';
 import TodoForm from './TodoForm.jsx';
-// Moved const todoList out of the App component,Rename todoList to todos
-  const todos = [
-    { id: 1, title: "review resources" },
-    { id: 2, title: "take notes" },
-    { id: 3, title: "code out app" },
-  ];
 
 function App() {
-// Implement useState inside the top of the App component
- const [todoList, setTodoList] = useState(todos);
+// Initialize todoList state with an empty array for dynamic todos
+ const [todoList, setTodoList] = useState([]);
+ // Create a handler function to add a new todo
+ function addTodo(todoTitle) {
+ const newTodo = {
+    id: Date.now(),
+    title: todoTitle
+  };
+   // Update state functionally, spreading previous todos behind the new one
+   setTodoList(previous => [newTodo, ...previous]);
+}
  return (
     <div>
-      <h1>Do It List</h1>
-      <TodoForm />
-      {/* 3. Add a todoList prop to the TodoList instance */}
-      <TodoList todoList={todoList} />
-    </div>
-  )
+    <h1>Do It List</h1>
+    {/* Pass the addTodo handler down to TodoForm via props */}
+    <TodoForm onAddTodo={addTodo} />  
+    {/* Pass the todoList state down to TodoList via props */}
+    <TodoList todoList={todoList} />
+  </div>
+ );
 }
-
 export default App;
