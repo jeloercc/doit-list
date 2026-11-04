@@ -9,8 +9,8 @@ A simple todo list app built with **React** and **Vite**. This project is part o
 
 ## Technologies
 
-- [React](https://react.dev/)
-- [Vite](https://vite.dev/)
+- React
+- Vite
 - JavaScript
 - ESLint
 
