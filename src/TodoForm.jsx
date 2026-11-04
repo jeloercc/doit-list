@@ -1,16 +1,22 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 
 function TodoForm({ onAddTodo }) {
   const inputRef = useRef();
 
+  // Create state variable workingTodoTitle initialized to empty string
+  const [workingTodoTitle, setWorkingTodoTitle] = useState('');
+
   const handleAddTodo = (event) => {
     event.preventDefault();
-    // .trim prevents whitespace only todos
-    const todoTitle = event.target.todoTitle.value.trim();
     
-    if (todoTitle) {
-      onAddTodo(todoTitle);
-      event.target.reset();
+    if (workingTodoTitle.trim()) {
+      // Pass workingTodoTitle to onAddTodo instead of event.target value
+      onAddTodo(workingTodoTitle);
+      
+      // Reset the input by calling the state setter with an empty string
+      setWorkingTodoTitle('');
+      
+      // Keep focus on input after submit
       inputRef.current.focus();
     }
   };
@@ -25,8 +31,11 @@ function TodoForm({ onAddTodo }) {
         name="todoTitle"
         placeholder={'Todo text'}
         required
-      />
-      <button type="submit">
+        // Connect input to state 
+        value={workingTodoTitle}
+        onChange={(event) => setWorkingTodoTitle(event.target.value)}
+        />
+      <button type="submit" disabled={!workingTodoTitle.trim()}>
         Add Todo
       </button>
     </form>
