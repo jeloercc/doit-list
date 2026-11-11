@@ -1,16 +1,18 @@
 import { useState, useRef } from 'react';
+import TextInputWithLabel from '../shared/TextInputWithLabel';
+import { isValidTodoTitle } from '../utils/todoValidation';
 
 function TodoForm({ onAddTodo }) {
   const inputRef = useRef();
-
   // Create state variable workingTodoTitle initialized to empty string
   const [workingTodoTitle, setWorkingTodoTitle] = useState('');
 
   const handleAddTodo = (event) => {
     event.preventDefault();
     
+    // Check if the title is not empty
     if (workingTodoTitle.trim()) {
-      // Pass workingTodoTitle to onAddTodo instead of event.target value
+      // Send the todo title to the parent component
       onAddTodo(workingTodoTitle);
       
       // Reset the input by calling the state setter with an empty string
@@ -21,25 +23,21 @@ function TodoForm({ onAddTodo }) {
     }
   };
 
-  return (
-      <form onSubmit={handleAddTodo}>
-      <label htmlFor="todoTitle">Todo</label>
-      <input
+ return (
+    <form onSubmit={handleAddTodo}>
+      {/* Reusable input component with label */}
+      <TextInputWithLabel
+        elementId="todoTitle"
+        labelText="Todo"
         ref={inputRef}
-        type="text"
-        id="todoTitle"
-        name="todoTitle"
-        placeholder={'Todo text'}
-        required
-        // Connect input to state 
         value={workingTodoTitle}
         onChange={(event) => setWorkingTodoTitle(event.target.value)}
-        />
-      <button type="submit" disabled={!workingTodoTitle.trim()}>
-        Add Todo
+      />
+      
+      <button type="submit" disabled={!isValidTodoTitle(workingTodoTitle)}>
+      Add Todo
       </button>
     </form>
   );
 }
-
 export default TodoForm;
