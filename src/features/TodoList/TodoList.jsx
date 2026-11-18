@@ -1,6 +1,6 @@
 import TodoListItem from './TodoListItem.jsx';
 // Destructure the new onCompleteTodo prop
-function TodoList({ todoList, onCompleteTodo }) {
+function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
   
 // Create filteredTodoList filtering out completed items
 const filteredTodoList = todoList.filter(todo => todo.isCompleted !== true);
@@ -18,6 +18,7 @@ return (
            key={todo.id} 
            todo={todo} 
            onCompleteTodo={onCompleteTodo} // Pass handler to child
+           onUpdateTodo={onUpdateTodo} // Pass handler to child
           />
         )}
       </ul>
