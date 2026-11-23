@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import TextInputWithLabel from '../../shared/TextInputWithLabel';
+import TextInputWithLabel from '../../../shared/TextInputWithLabel';
 // Import validation helper to reuse it for the Update button
-import { isValidTodoTitle } from '../../utils/todoValidation';
+import { isValidTodoTitle } from '../../../utils/todoValidation';
 
 // Add onCompleteTodo to the props using destructuring
 function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
