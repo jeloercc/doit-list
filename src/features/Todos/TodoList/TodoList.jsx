@@ -1,26 +1,38 @@
 import TodoListItem from './TodoListItem.jsx';
+import { useMemo } from 'react';
+
 // Destructure the new onCompleteTodo prop
-function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
+function TodoList({
+  todoList,
+  dataVersion,
+  onCompleteTodo,
+  onUpdateTodo
+}) {
   
-// Create filteredTodoList filtering out completed items
-const filteredTodoList = todoList.filter(todo => todo.isCompleted !== true);
-return (
-    // Check if the todoList array is empty
-    filteredTodoList.length === 0 ? (
-      // If true, render the empty state message
+// Recalculate filtered todos when the list or data version changes
+  const filteredTodoList = useMemo(() => {
+
+    return {
+      version: dataVersion,
+      todos: todoList.filter(todo => todo.isCompleted !== true)
+    };
+  }, [todoList, dataVersion]);
+
+  return (
+    // Display an empty message when there are no incomplete todos
+    filteredTodoList.todos.length === 0 ? (
       <p>Add todo above to get started</p>
     ) : (
-      // If false, render the unordered list with the mapped todos[cite: 1]
+      // Render the list of incomplete todos
       <ul>
-        {/* Map over filteredTodoList instead of todoList */}
-        {filteredTodoList.map(todo => 
-         <TodoListItem 
-           key={todo.id} 
-           todo={todo} 
-           onCompleteTodo={onCompleteTodo} // Pass handler to child
-           onUpdateTodo={onUpdateTodo} // Pass handler to child
+        {filteredTodoList.todos.map(todo => (
+          <TodoListItem
+            key={todo.id}
+            todo={todo}
+            onCompleteTodo={onCompleteTodo}
+            onUpdateTodo={onUpdateTodo}
           />
-        )}
+        ))}
       </ul>
     )
   );
